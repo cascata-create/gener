@@ -1,0 +1,648 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>性別新「視」界</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=LXGW+WenKai+TC:wght@400;700&display=swap">
+<style>
+/* Layout: one working column (max 980px). Top bar with class badge and 學生端/教師端 switch, a standing safety-pledge strip,
+   a scrollable module tab row, then the active module. Category colors are teal / amber / violet on purpose (no pink-blue gender coding). */
+:root{
+  --bg:#F1F4F8; --surface:#FFFFFF; --ink:#172033; --muted:#566077; --line:#D6DCE8;
+  --teal:#0B7F82; --amber:#A96A00; --violet:#5B45B8;
+  --warn:#FFE7A0; --warn-ink:#5A4100; --ok:#1E7B4B; --bad:#B3341F;
+  --f-display:'LXGW WenKai TC','Noto Sans TC',system-ui,sans-serif;
+  --f-body:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1420; --surface:#192031; --ink:#E7ECF6; --muted:#9BA6BF; --line:#2C3550;
+  --teal:#4CC7C9; --amber:#EBB34F; --violet:#B3A4F7;
+  --warn:#4B3B0E; --warn-ink:#FFE7A0; --ok:#5FCB92; --bad:#F08A76; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1420; --surface:#192031; --ink:#E7ECF6; --muted:#9BA6BF; --line:#2C3550;
+  --teal:#4CC7C9; --amber:#EBB34F; --violet:#B3A4F7;
+  --warn:#4B3B0E; --warn-ink:#FFE7A0; --ok:#5FCB92; --bad:#F08A76; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);line-height:1.3;margin:0;text-wrap:balance}
+h1{font-size:1.7rem} h2{font-size:1.35rem} h3{font-size:1.1rem}
+p{margin:.4em 0} a{color:var(--teal)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding-block:14px 56px}
+.muted{color:var(--muted);font-size:.9rem}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:space-between;padding-block:6px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand b{font-family:var(--f-display);font-size:1.25rem}
+.lens{width:34px;height:34px;border-radius:50%;flex:none;border:4px solid var(--teal);position:relative;background:
+  radial-gradient(circle at 35% 35%,color-mix(in srgb,var(--teal) 30%,transparent) 0 22%,transparent 24%)}
+.lens::after{content:"";position:absolute;width:12px;height:4px;background:var(--teal);right:-11px;bottom:-3px;transform:rotate(45deg);border-radius:2px}
+.who{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-size:.85rem;padding:3px 10px;border-radius:99px;border:1px solid var(--line);background:var(--surface)}
+.badge.t{border-color:var(--violet);color:var(--violet);font-weight:700}
+.pledge{background:var(--warn);color:var(--warn-ink);border-radius:10px;padding:8px 12px;font-size:.88rem;margin-block:8px}
+.pledge summary{cursor:pointer;font-weight:700}
+.pledge ol{margin:.4em 0 0;padding-left:1.3em}
+.net{background:var(--bad);color:#fff;border-radius:10px;padding:8px 12px;margin-block:8px;font-size:.92rem}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-block:6px 10px;scrollbar-width:thin}
+.tabs a{flex:none;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);font-size:.92rem;white-space:nowrap}
+.tabs a[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-block:12px}
+.card>h3{margin-bottom:8px}
+.mh{display:flex;gap:12px;align-items:flex-start;margin-block:10px 4px}
+.letter{flex:none;width:44px;height:44px;border-radius:12px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:1.3rem}
+.mh p{margin:2px 0 0}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.grid>*{min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 14px;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:500}
+.btn.sm{padding:3px 10px;min-height:30px;font-size:.88rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.on{outline:3px solid var(--teal);outline-offset:0;font-weight:700}
+.btn.good{border-color:var(--ok);color:var(--ok)} .btn.bad{border-color:var(--bad);color:var(--bad)}
+.opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.fld{display:flex;flex-direction:column;gap:4px;margin-block:8px}
+.fld>span{font-weight:500;font-size:.95rem}
+input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;min-width:0}
+textarea{resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.login{max-width:440px;margin:6vh auto 0}
+.login h1{margin-block:14px 2px}
+.sub{color:var(--muted);margin-top:0}
+.plain{margin:.2em 0;padding-left:1.3em}
+.deck{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:10px;margin-block:8px}
+.slot{border:2px dashed var(--line);border-radius:12px;min-height:92px;padding:10px;display:flex;flex-direction:column;gap:4px;justify-content:center;align-items:center;text-align:center}
+.slot small{color:var(--muted)} .slot b{font-family:var(--f-display);font-size:1.25rem}
+.slot.on{border-style:solid;border-color:var(--teal);animation:pop .35s ease-out}
+.slot.next{border-color:var(--ink)}
+@keyframes pop{from{transform:rotateY(80deg);opacity:.2}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.slot.on{animation:none}}
+.sentence{font-family:var(--f-display);font-size:1.3rem;padding:12px 14px;border-left:5px solid var(--violet);background:color-mix(in srgb,var(--violet) 10%,var(--surface));border-radius:8px;margin-block:10px}
+.note{background:color-mix(in srgb,var(--violet) 12%,var(--surface));border-radius:8px;padding:8px 12px;font-size:.92rem;margin-block:8px}
+.bar{display:grid;grid-template-columns:minmax(5em,9em) 1fr 6em;gap:8px;align-items:center;font-size:.92rem;margin-block:4px}
+.bar b{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
+.tr{height:14px;border-radius:7px;background:color-mix(in srgb,var(--ink) 9%,var(--surface));overflow:hidden;display:flex}
+.tr i{display:block;height:100%}
+.heat{display:grid;grid-template-columns:minmax(5em,8em) 1fr minmax(5em,7em);gap:8px;align-items:center;font-size:.9rem;margin-block:3px}
+.heat small{color:var(--muted);font-variant-numeric:tabular-nums}
+.lg{display:flex;gap:12px;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.lg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.seg{display:flex;gap:4px}
+.seg button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 6px;cursor:pointer;min-height:34px;font-size:.88rem}
+.seg button.on-m{background:var(--teal);color:var(--bg);border-color:var(--teal)}
+.seg button.on-f{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+.jobrow{display:grid;grid-template-columns:minmax(6em,9em) 1fr;gap:8px;align-items:center;padding-block:3px;border-bottom:1px dashed var(--line)}
+.jobs{max-height:420px;overflow:auto;padding-right:4px}
+.chipwrap{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:3px 10px;border-radius:99px;font-size:.85rem;border:1px solid var(--line);background:var(--bg)}
+.chip.k{background:var(--warn);color:var(--warn-ink);border-color:transparent}
+.kw{min-height:0;margin-top:2px}
+.post{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;gap:10px;justify-content:space-between;align-items:flex-start;margin-block:6px}
+.post p{margin:0;overflow-wrap:anywhere}
+.tag{font-size:.78rem;padding:1px 8px;border-radius:99px;background:color-mix(in srgb,var(--violet) 15%,var(--surface));color:var(--violet);white-space:nowrap}
+.cols3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.cols3>*{min-width:0}
+.item{display:flex;justify-content:space-between;gap:8px;padding:6px 10px;border-radius:8px;background:var(--bg);margin-block:5px;overflow-wrap:anywhere}
+details{margin-block:6px} summary{cursor:pointer;font-weight:500}
+details .body{padding:6px 0 6px 10px;border-left:3px solid var(--line)}
+.step4{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.lesson h3{margin-bottom:6px}
+.lesson ul{list-style:none;margin:0;padding:0}
+.lesson li{display:flex;gap:8px;justify-content:space-between;align-items:baseline;padding-block:6px;border-bottom:1px dashed var(--line)}
+.lesson li:last-child{border:0}
+.min{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;white-space:nowrap}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:99px;z-index:20;font-size:.92rem;max-width:90vw}
+.empty{color:var(--muted);padding:14px;border:1px dashed var(--line);border-radius:10px;text-align:center;font-size:.92rem}
+.tips{font-size:.9rem}
+.tips li{margin-block:3px}
+@media (max-width:520px){.two{grid-template-columns:1fr 1fr}.bar{grid-template-columns:minmax(4em,6.5em) 1fr 5.2em}.heat{grid-template-columns:minmax(4.5em,6em) 1fr}.heat small{display:none}}
+</style>
+
+<div class="wrap" id="app"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+var app=$('#app');
+
+/* ---------- content ---------- */
+var TRAITS=['溫柔','勇敢','細心','愛哭','有領導力','幽默','害羞','有耐心','堅強','愛漂亮','理性','活潑好動','安靜','好勝'];
+var GENDERS=['男生','男生','男生','男生','男生','女生','女生','女生','女生','女生','跨性別者','跨性別者'];
+var ACTS=['打籃球','烘焙','化妝','打電競','跳舞','踢足球','縫紉手作','組裝模型','追劇','露營登山','彈鋼琴','畫畫','園藝種植','拳擊'];
+var JOBSA=['護理師','工程師','消防員','幼兒園老師','太空人','空服員','美髮師','警察','廚師','律師','保母','機師','外科醫師','建築師'];
+var KEYS=[['trait','特質',TRAITS],['gender','性別',GENDERS],['activity','活動',ACTS],['job','職業',JOBSA]];
+var REACTS=['很自然','有點意外','怪怪的','很酷'];
+var JOBS=['記者','機師','太空人','美甲師','農夫','AI 工程師','醫生','護理師','律師','水電師傅','法醫','巡山員','警察','消防員','領隊','保母','會計師','寵物訓練師','外送員','配音員','計程車司機','物理治療師','彩妝師','導遊','空服員'];
+var POLLS=[
+ {id:'p1',lesson:'第 1 節 開場',q:'剛剛描述的那個人（溫柔、有耐心、週末烘焙、想當護理師），你腦中出現的是？',opts:['男生','女生','看不出來或兩者都有']},
+ {id:'p2',lesson:'第 2 節 開場',q:'男生比較不會表達情感。',opts:['同意','不同意','不確定']},
+ {id:'p3',lesson:'第 2 節 開場',q:'女生比較不適合當領導者。',opts:['同意','不同意','不確定']},
+ {id:'p4',lesson:'第 2 節 開場',q:'男生就是要比較勇敢。',opts:['同意','不同意','不確定']},
+ {id:'p5',lesson:'第 3 節 開場',q:'聽到「你是男生耶，哭什麼哭！」「女生不用太會運動啦。」「他怎麼打扮得這麼女生？」，如果你是被說的人，感覺是？',opts:['不舒服','無所謂','被傷到','說不上來']},
+ {id:'p6',lesson:'第 3 節 資訊補給站',q:'你有沒有在學校、車站、百貨公司看過「性別友善廁所」的標誌？',opts:['有','沒有','不確定']}
+];
+var CATS=['家庭','校園','媒體'];
+var KWRE=/應該|一定|才|就是要|天生|比較適合/g;
+var CASES=['實例一（告白）','實例二（打扮）','實例三（家庭）','實例四（性別友善廁所）'];
+var TABS=[['home','總覽'],['a','A 抽卡機'],['b','B 職業聯想國'],['c','C 即時投票'],['d','D 生活實例牆'],['w2','學習單 2'],['e','E 四步驟鷹架'],['f','F 廁所觀點表'],['g','G 省思表單']];
+var LESSONS=[
+ {t:'第 1 節　性別搜查空間',g:'覺察自己對「性別、特質、興趣、職業」的既有想法',s:[['引起動機：我腦中的他／她',5,'c'],['性別程式大哉問',20,'a'],['性別職業聯想國',17,'b'],['省思書寫（學習單 1）',0,'g'],['統整與預告',3,'']]},
+ {t:'第 2 節　性別華爾滋',g:'從新聞與生活實例辨識性別刻板印象',s:[['性別迷思即時投票',5,'c'],['性別之城：閱讀 World news（課本 p.98）',15,'w2'],['性別日常：四個實例＋實例牆',20,'d'],['統整與回家小任務',5,'']]},
+ {t:'第 3 節　性別城恰恰恰',g:'運用四步驟看見之後，提出修正想法',s:[['引起動機：換個說法',5,'c'],['性別城恰恰恰：發‧質‧同‧修',21,'e'],['資訊補給站：性別友善廁所',11,'f'],['分享與省思（學習單 3）',8,'g']]}
+];
+var PREP=['課前完整測試模組 A–G，建立班級代碼','確認每隊至少 1 台載具；準備備用熱點或平板車','教師端畫面接上投影','向學生說明資料只用於本單元、不記姓名','異質分組 6 小隊，指派組長、記錄、發言人、器材長、鼓勵員','列印紙本備案（附件 1–4）並貼好黑板句型','與學生訂定安全討論約定，三節課都保留在黑板一角'];
+
+/* ---------- state & data layer ---------- */
+var COLS=['cards','react','occ','occtalk','ctl','votes','wall','steps','toilet','ws2'];
+var D={reflect:[]}; COLS.forEach(function(c){D[c]=[]});
+var S={code:'',g:0,s:0,teacher:false,shared:false,uid:null,canEdit:null};
+var db=null, mem=LS.get('gl_mem',{}), unsubs=[], current=null, view=null, upTimer=null;
+function colName(n){return n==='reflect'?'reflect':'s_'+S.code+'_'+n}
+function refreshLocal(n){var m=mem[colName(n)]||{};D[n]=Object.keys(m).map(function(id){var o={};for(var k in m[id])o[k]=m[id][k];o.id=id;return o});if(n==='reflect')D[n]=D[n].filter(function(x){return x.code===S.code});schedule()}
+function schedule(){clearTimeout(upTimer);upTimer=setTimeout(function(){if(current&&current.live)current.live()},90)}
+function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},2400)}
+function clean(o){var r={};for(var k in o)if(k!=='id')r[k]=o[k];return r}
+function put(n,id,data){
+  var key=colName(n);
+  if(S.shared&&db){return db.collection(key).doc(id).set(data).catch(function(e){toast('儲存失敗，請稍後再試');throw e})}
+  (mem[key]=mem[key]||{})[id]=data;LS.set('gl_mem',mem);refreshLocal(n);return Promise.resolve();
+}
+function find(n,id){return D[n].filter(function(x){return x.id===id})[0]}
+function patchDoc(n,id,f){var ex=find(n,id)||{};var o=clean(ex);for(var k in f)o[k]=f[k];return put(n,id,o)}
+function addDoc(n,data){return put(n,'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),data)}
+function delDoc(n,id){
+  var key=colName(n);
+  if(S.shared&&db){return db.collection(key).doc(id).delete().catch(function(){toast('刪除失敗')})}
+  if(mem[key])delete mem[key][id];LS.set('gl_mem',mem);refreshLocal(n);return Promise.resolve();
+}
+function startSync(){
+  unsubs.splice(0).forEach(function(f){f()});
+  COLS.concat(['reflect']).forEach(function(n){
+    if(S.shared&&db){
+      try{
+        unsubs.push(db.collection(colName(n)).onSnapshot(function(snap){
+          D[n]=snap.docs.map(function(d){var o=d.data()||{};var r={};for(var k in o)r[k]=o[k];r.id=d.id;return r});
+          if(n==='reflect')D[n]=D[n].filter(function(x){return x.code===S.code});
+          schedule();
+        },function(e){console.warn('sync',n,e&&e.code)}));
+      }catch(e){console.warn(e)}
+    }else refreshLocal(n);
+  });
+}
+function ctl(){var c=find('ctl','state')||{};return {pollId:c.pollId||'p1',show:c.show!==false,trans:c.trans!==false,custom:c.custom||[]}}
+function setCtl(f){var c=ctl();for(var k in f)c[k]=f[k];return put('ctl','state',c)}
+function allPolls(){return POLLS.concat(ctl().custom)}
+function me(){return S.g+'-'+S.s}
+
+/* ---------- helpers ---------- */
+function bars(rows,color){
+  var max=Math.max.apply(null,[1].concat(rows.map(function(r){return r.n})));
+  var tot=rows.reduce(function(a,r){return a+r.n},0)||1;
+  return rows.map(function(r){return '<div class="bar"><span>'+esc(r.l)+'</span><span class="tr"><i style="width:'+(r.n/max*100)+'%;background:var('+(r.c||color||'--teal')+')"></i></span><b>'+r.n+'（'+Math.round(r.n/tot*100)+'%）</b></div>'}).join('');
+}
+function head(letter,title,sub){return '<div class="mh"><div class="letter" aria-hidden="true">'+letter+'</div><div><h2>'+title+'</h2><p class="muted">'+sub+'</p></div></div>'}
+function tips(list){return '<details class="card tips"><summary>教學提示（教案原文重點）</summary><ul>'+list.map(function(t){return '<li>'+t+'</li>'}).join('')+'</ul></details>'}
+function kwOf(t){var m=String(t||'').match(KWRE);return m?m.filter(function(x,i){return m.indexOf(x)===i}):[]}
+function form(box,o){
+  box.innerHTML=o.fields.map(function(f){return '<label class="fld"><span>'+f.label+'</span><textarea data-k="'+f.k+'" rows="'+(f.rows||3)+'" placeholder="'+esc(f.ph||'')+'"'+(o.off?' disabled':'')+'></textarea>'+(o.kw?'<div class="kw chipwrap" data-kw="'+f.k+'"></div>':'')+'</label>'}).join('')+
+   '<div class="row"><button class="btn primary" type="button" data-save'+(o.off?' disabled':'')+'>'+(o.btn||'送出')+'</button><span class="muted" data-st></span></div>';
+  var dirty=false;
+  function chips(t){if(!o.kw)return;var c=$('[data-kw="'+t.dataset.k+'"]',box);var k=kwOf(t.value);c.innerHTML=k.length?k.map(function(x){return '<span class="chip k">'+esc(x)+'</span>'}).join('')+'<span class="muted">這裡可能有刻板印象，再想想</span>':''}
+  box.addEventListener('input',function(e){dirty=true;if(e.target.tagName==='TEXTAREA')chips(e.target)});
+  $('[data-save]',box).onclick=function(){
+    var v={};$$('textarea',box).forEach(function(t){v[t.dataset.k]=t.value});
+    var extra=o.extra?o.extra():{};for(var k in extra)v[k]=extra[k];
+    patchDoc(o.col,o.id(),v).then(function(){dirty=false;$('[data-st]',box).textContent='已送出 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}).catch(function(){});
+  };
+  return {sync:function(){
+    var d=find(o.col,o.id());if(!d||dirty)return;
+    $$('textarea',box).forEach(function(t){var v=d[t.dataset.k];if(v!=null&&t.value!==v&&document.activeElement!==t){t.value=v;chips(t)}});
+  }};
+}
+function answers(col,labels,filter){
+  var rows=D[col].filter(filter||function(){return true}).sort(function(a,b){return String(a.id)<String(b.id)?-1:1});
+  if(!rows.length)return '<div class="empty">還沒有小隊送出內容</div>';
+  return rows.map(function(r){
+    var inner=labels.map(function(l){return r[l[0]]?'<p><b>'+esc(l[1])+'</b><br>'+esc(r[l[0]]).replace(/\n/g,'<br>')+'</p>':''}).join('');
+    return '<details><summary>'+esc(r.g?('第 '+r.g+' 小隊'):r.id)+'</summary><div class="body">'+(inner||'<span class="muted">尚無內容</span>')+'</div></details>';
+  }).join('');
+}
+var ACT={};
+function tea(){return S.teacher}
+
+/* ---------- modules ---------- */
+var MODS={};
+
+/* A 抽卡機 */
+MODS.a={mount:function(root,t){
+  if(!t){
+    root.innerHTML=head('A','性別程式抽卡機','第 1 節 · 性別程式大哉問（課本 p.96）')+
+    '<div class="card"><h3>活動規則</h3><ol class="plain"><li>抽到什麼就用什麼，不能重抽。</li><li>這是隨機組合的遊戲，不是在評價任何真實的人。</li></ol></div>'+
+    '<div class="card"><h3>第 '+S.g+' 小隊的卡</h3><div class="deck" id="deck"></div><div class="row"><button class="btn primary" id="draw" type="button">抽下一張</button><span class="muted" id="hint"></span></div><div id="sent"></div></div>'+
+    '<div class="card" id="rc" hidden><h3>我的第一反應</h3><div class="opts" id="reacts"></div><p class="muted">組內輪流分享 30 秒：① 我為什麼這樣選？② 我覺得這個組合適合或不適合嗎？為什麼？③ 如果「小凡」是我，我希望別人怎麼看？</p></div>';
+    $('#draw').onclick=function(){
+      var d=find('cards','g'+S.g)||{};var k=KEYS.filter(function(x){return !d[x[0]]})[0];if(!k)return;
+      var pool=k[2];if(k[0]==='gender'&&!ctl().trans)pool=pool.filter(function(x){return x!=='跨性別者'});
+      var f={g:S.g};f[k[0]]=pool[Math.floor(Math.random()*pool.length)];patchDoc('cards','g'+S.g,f);
+    };
+    $('#reacts').innerHTML=REACTS.map(function(r){return '<button type="button" class="btn" data-a="react:'+r+'">'+r+'</button>'}).join('');
+    return function(){
+      var d=find('cards','g'+S.g)||{};var next=null;
+      $('#deck').innerHTML=KEYS.map(function(k){var v=d[k[0]];if(!v&&!next)next=k[0];return '<div class="slot'+(v?' on':(k[0]===next?' next':''))+'"><small>'+k[1]+'</small>'+(v?'<b>'+esc(v)+'</b>':'<span class="muted">？</span>')+'</div>'}).join('');
+      var done=KEYS.every(function(k){return d[k[0]]});
+      $('#draw').disabled=done;$('#hint').textContent=done?'四張都抽完了':'下一張：'+KEYS.filter(function(k){return !d[k[0]]})[0][1];
+      var s=$('#sent');
+      if(done){var sen='小凡是'+d.trait+'的'+d.gender+'，興趣是'+d.activity+'，未來想成為'+d.job+'。';
+        s.innerHTML='<div class="sentence">'+esc(sen)+'</div><p class="muted">請全隊一起念出來。英文詞彙：trait、gender、activity、job。</p>'+(d.gender==='跨性別者'?'<div class="note">跨性別者是指性別認同和出生時被登記的生理性別不同的人。他們和每個人一樣，有自己的特質、興趣與夢想。</div>':'');
+        MODS.a.sen=sen;
+      }else s.innerHTML='';
+      $('#rc').hidden=!done;
+      var mine=find('react',me());
+      $$('#reacts button').forEach(function(b){b.classList.toggle('on',!!mine&&mine.choice===b.dataset.a.split(':')[1])});
+    };
+  }
+  root.innerHTML=head('A','性別程式抽卡機（教師端）','第 1 節 · 性別程式大哉問')+
+   '<div class="card"><h3>卡片設定</h3><label class="row"><input type="checkbox" id="tr" style="width:auto"> 抽卡時包含「跨性別者」卡</label></div>'+
+   '<div class="card"><h3>各隊句子與第一反應</h3><div id="tl"></div><div class="lg"><span><i style="background:var(--teal)"></i>很自然</span><span><i style="background:var(--violet)"></i>有點意外</span><span><i style="background:var(--amber)"></i>怪怪的</span><span><i style="background:var(--ink)"></i>很酷</span></div></div>'+
+   tips(['示範：抽到「有耐心」「男生」「烘焙」「太空人」，念出句子後問「這個人你覺得怪嗎？」。','鷹架問句：是「特質」讓你覺得怪，還是「性別」和「職業」搭在一起讓你覺得怪？','如果把性別換成另一個，你的感覺會一樣嗎？「怪」的感覺是從哪裡來的？','結論：特質、興趣和職業不是由性別決定的；每個人都希望自己的選擇被尊重。']);
+  $('#tr').onchange=function(e){setCtl({trans:e.target.checked})};
+  return function(){
+    $('#tr').checked=ctl().trans;
+    var cl=['--teal','--violet','--amber','--ink'];var h='';
+    for(var g=1;g<=6;g++){
+      var d=find('cards','g'+g)||{};var done=KEYS.every(function(k){return d[k[0]]});
+      var rs=D.react.filter(function(r){return r.g===g});
+      var tot=rs.length||0;
+      h+='<div class="post" style="display:block"><div class="row" style="justify-content:space-between"><b>第 '+g+' 小隊</b><button class="btn sm bad" type="button" data-a="resetcard:'+g+'">重抽</button></div>'+
+        (done?'<p>小凡是'+esc(d.trait)+'的'+esc(d.gender)+'，興趣是'+esc(d.activity)+'，未來想成為'+esc(d.job)+'。</p>':'<p class="muted">已抽 '+KEYS.filter(function(k){return d[k[0]]}).map(function(k){return k[1]+'：'+d[k[0]]}).join('、')+(KEYS.some(function(k){return d[k[0]]})?'':'尚未開始')+'</p>')+
+        (tot?'<div class="tr">'+REACTS.map(function(r,i){var n=rs.filter(function(x){return x.choice===r}).length;return '<i title="'+r+' '+n+'" style="width:'+(n/tot*100)+'%;background:var('+cl[i]+')"></i>'}).join('')+'</div><p class="muted">'+REACTS.map(function(r){return r+' '+rs.filter(function(x){return x.choice===r}).length}).join('　')+'</p>':'')+'</div>';
+    }
+    $('#tl').innerHTML=h;
+  };
+}};
+ACT.react=function(r){var d=find('cards','g'+S.g)||{};var sen=MODS.a.sen||'';put('react',me(),{g:S.g,s:S.s,choice:r,combo:sen})};
+ACT.resetcard=function(g){delDoc('cards','g'+g);D.react.filter(function(r){return r.g===+g}).forEach(function(r){delDoc('react',r.id)})};
+
+/* B 職業聯想國 */
+MODS.b={mount:function(root,t){
+  if(!t){
+    var d1={},d2=[];
+    root.innerHTML=head('B','性別職業聯想國','第 1 節 · 課本 p.97')+
+    '<div class="card"><h3>① 直覺分類</h3><p>憑第一直覺，選「我覺得男生比較多」或「我覺得女生比較多」。沒有標準答案，只要誠實。</p><div class="jobs" id="jl"></div><div class="row" style="margin-top:10px"><button class="btn primary" id="s1" type="button">送出第一次分類</button><span class="muted" id="c1"></span></div></div>'+
+    '<div class="card" id="dist" hidden><h3>② 看見全班的分布</h3><div class="lg"><span><i style="background:var(--teal)"></i>男生較多</span><span><i style="background:var(--amber)"></i>女生較多</span></div><div id="heat"></div></div>'+
+    '<div class="card" id="talk" hidden><h3>③ 小隊討論</h3><p class="muted">課本 p.97：「感覺男性比較適合太空人。」→「咦？有規定嗎？」　「女生比較有耐心，的確較適合空服員。」→「是這樣嗎？但我也有遇過男性空服員，有差嗎？」</p><div id="tf"></div></div>'+
+    '<div class="card" id="re" hidden><h3>④ 重新分類</h3><p>挑出 5 個你現在覺得其實「不該被性別限制」的職業，移到「不分性別」。</p><div class="chipwrap" id="jr"></div><div class="row" style="margin-top:10px"><button class="btn primary" id="s2" type="button">送出第二次分類</button><span class="muted" id="c2"></span></div><div id="mv"></div></div>';
+    var tf=form($('#tf'),{col:'occtalk',id:function(){return 'g'+S.g},extra:function(){return {g:S.g}},btn:'送出小隊討論',fields:[
+      {k:'q1',label:'Q1 哪些職業全班意見一致？大家是依據什麼分的？（身邊看到的人／電視廣告／聽過的說法／體力）'},
+      {k:'q2',label:'Q2 這個職業真正「需要」的是什麼能力、訓練或特質？那些能力是「只有男生才有」或「只有女生才有」嗎？'},
+      {k:'q3',label:'Q3 現實中有沒有看過「不符合我們分類」的人？（例如男護理師、女消防員、男空服員、女機師）'}]});
+    var inited=false;
+    function draw1(){
+      $('#jl').innerHTML=JOBS.map(function(j,i){var v=d1[j];return '<div class="jobrow"><span>'+esc(j)+'</span><div class="seg"><button type="button" class="'+(v==='M'?'on-m':'')+'" data-a="r1:'+i+':M">男生較多</button><button type="button" class="'+(v==='F'?'on-f':'')+'" data-a="r1:'+i+':F">女生較多</button></div></div>'}).join('');
+      var n=Object.keys(d1).length;$('#c1').textContent='已分類 '+n+' / '+JOBS.length;$('#s1').disabled=n<JOBS.length;
+    }
+    function draw2(){
+      $('#jr').innerHTML=JOBS.map(function(j,i){return '<button type="button" class="btn sm'+(d2.indexOf(j)>=0?' on':'')+'" data-a="r2:'+i+'">'+esc(j)+'</button>'}).join('');
+      $('#c2').textContent='已選 '+d2.length+' / 5';$('#s2').disabled=d2.length!==5;
+    }
+    MODS.b.set1=function(i,v){d1[JOBS[i]]=v;draw1()};
+    MODS.b.tog2=function(i){var j=JOBS[i],p=d2.indexOf(j);if(p>=0)d2.splice(p,1);else if(d2.length<5)d2.push(j);else toast('最多選 5 個');draw2()};
+    $('#s1').onclick=function(){patchDoc('occ',me(),{g:S.g,s:S.s,r1:d1,sub1:true}).then(function(){toast('已送出第一次分類')})};
+    $('#s2').onclick=function(){patchDoc('occ',me(),{g:S.g,s:S.s,r2:d2,sub2:true}).then(function(){toast('已送出第二次分類')})};
+    draw1();draw2();
+    return function(){
+      var mine=find('occ',me())||{};
+      if(!inited&&mine.r1){d1=JSON.parse(JSON.stringify(mine.r1));d2=(mine.r2||[]).slice();inited=true;draw1();draw2()}
+      var s1=!!mine.sub1;$('#dist').hidden=!s1;$('#talk').hidden=!s1;$('#re').hidden=!s1;
+      if(s1){
+        $('#heat').innerHTML=JOBS.map(function(j){var m=0,f=0;D.occ.forEach(function(o){if(o.r1&&o.r1[j]==='M')m++;if(o.r1&&o.r1[j]==='F')f++});var tt=(m+f)||1;
+          return '<div class="heat"><span>'+esc(j)+'</span><span class="tr"><i style="width:'+m/tt*100+'%;background:var(--teal)"></i><i style="width:'+f/tt*100+'%;background:var(--amber)"></i></span><small>男 '+m+'・女 '+f+'</small></div>'}).join('');
+        tf.sync();
+        if(mine.sub2){var moved=(mine.r2||[]).filter(function(j){return mine.r1&&mine.r1[j]});$('#mv').innerHTML='<div class="note">你把 '+moved.length+' 個職業移到「不分性別」：'+moved.map(esc).join('、')+'。職業需要的是能力、興趣和訓練，不是性別。</div>'}
+      }
+    };
+  }
+  root.innerHTML=head('B','性別職業聯想國（教師端）','第 1 節 · 全班分布熱圖與前後移動數')+
+   '<div class="card"><h3>全班分布熱圖</h3><p class="muted" id="np"></p><div class="lg"><span><i style="background:var(--teal)"></i>男生較多</span><span><i style="background:var(--amber)"></i>女生較多</span><span><i style="background:var(--violet)"></i>第二次移到不分性別</span></div><div id="th"></div></div>'+
+   '<div class="card"><h3>各隊討論（Q1–Q3）</h3><div id="tk"></div></div>'+
+   tips(['先帶學生看：哪些職業全班意見幾乎一致？哪些分歧？','補充：世界上第一位進入太空的女性是蘇聯的捷列什科娃（1963 年）；臺灣也有男護理師、男幼教老師、女機師、女消防員。','結論：職業需要的是能力、興趣和訓練，不是性別。我們分得很快，是因為腦中的刻板印象在工作。']);
+  return function(){
+    var s1=D.occ.filter(function(o){return o.sub1}).length,s2=D.occ.filter(function(o){return o.sub2}).length;
+    $('#np').textContent='已送出第一次分類 '+s1+' 人，第二次 '+s2+' 人';
+    var rows=JOBS.map(function(j){var m=0,f=0,n=0;D.occ.forEach(function(o){if(o.r1&&o.r1[j]==='M')m++;if(o.r1&&o.r1[j]==='F')f++;if(o.r2&&o.r2.indexOf(j)>=0)n++});return {j:j,m:m,f:f,n:n}});
+    rows.sort(function(a,b){return Math.abs(b.m-b.f)/((b.m+b.f)||1)-Math.abs(a.m-a.f)/((a.m+a.f)||1)});
+    $('#th').innerHTML=rows.map(function(r){var tt=(r.m+r.f)||1;return '<div class="heat" style="grid-template-columns:minmax(5em,8em) 1fr minmax(6em,9em)"><span>'+esc(r.j)+'</span><span><span class="tr"><i style="width:'+r.m/tt*100+'%;background:var(--teal)"></i><i style="width:'+r.f/tt*100+'%;background:var(--amber)"></i></span><span class="tr" style="height:6px;margin-top:3px"><i style="width:'+Math.min(100,r.n/Math.max(1,s2)*100)+'%;background:var(--violet)"></i></span></span><small>男'+r.m+'・女'+r.f+'・移動'+r.n+'</small></div>'}).join('');
+    $('#tk').innerHTML=answers('occtalk',[['q1','Q1'],['q2','Q2'],['q3','Q3']]);
+  };
+}};
+ACT.r1=function(a){var p=a.split(':');MODS.b.set1(+p[0],p[1])};
+ACT.r2=function(a){MODS.b.tog2(+a)};
+
+/* C 即時投票 */
+MODS.c={mount:function(root,t){
+  if(!t){
+    root.innerHTML=head('C','即時投票','每堂課開場與資訊補給站 · 匿名')+'<div class="card" id="pq"></div>';
+    return function(){
+      var c=ctl(),p=allPolls().filter(function(x){return x.id===c.pollId})[0]||POLLS[0];
+      var mine=find('votes',p.id+'_'+me());
+      var h='<h3>'+esc(p.q)+'</h3><div class="opts">'+p.opts.map(function(o){return '<button type="button" class="btn'+(mine&&mine.choice===o?' on':'')+'" data-a="vote:'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>';
+      var vs=D.votes.filter(function(v){return v.pollId===p.id});
+      h+=c.show?'<div style="margin-top:12px">'+bars(p.opts.map(function(o){return {l:o,n:vs.filter(function(v){return v.choice===o}).length}}))+'</div>':'<p class="muted" style="margin-top:12px">老師還沒有公布結果。投票是匿名的，沒有對錯，只需誠實。</p>';
+      $('#pq').innerHTML=h;
+    };
+  }
+  root.innerHTML=head('C','即時投票（教師端）','選擇題目、投影長條圖')+
+   '<div class="card"><h3>題目</h3><div id="pl"></div><div class="row" style="margin-top:8px"><button class="btn" type="button" data-a="toggleshow" id="ts"></button><button class="btn bad" type="button" data-a="clearvotes">清除本題票數</button></div></div>'+
+   '<div class="card"><h3 id="qt"></h3><div id="pr"></div></div>'+
+   '<div class="card"><h3>自訂題目</h3><label class="fld"><span>題目</span><input id="cq" maxlength="100"></label><label class="fld"><span>選項（用逗號分開，2 到 5 個）</span><input id="co" value="同意,不同意,不確定"></label><button class="btn primary" id="ca" type="button">加入並切換到這題</button></div>'+
+   tips(['規則：匿名投票、沒有對錯、只需誠實，不批評別人的選擇。','每題投票後，請不同立場各 1 位說明理由。','載具不足時，可改成舉手統計，或教室兩側貼「同意」「不同意」站位。']);
+  $('#ca').onclick=function(){
+    var q=$('#cq').value.trim(),o=$('#co').value.split(/[,，、]/).map(function(x){return x.trim()}).filter(Boolean).slice(0,5);
+    if(!q||o.length<2){toast('請輸入題目與至少 2 個選項');return}
+    var c=ctl(),id='c'+Date.now().toString(36);c.custom=c.custom.concat([{id:id,lesson:'自訂',q:q,opts:o}]);setCtl({custom:c.custom,pollId:id});$('#cq').value='';
+  };
+  return function(){
+    var c=ctl(),ps=allPolls(),p=ps.filter(function(x){return x.id===c.pollId})[0]||ps[0];
+    $('#pl').innerHTML=ps.map(function(x){return '<button type="button" class="btn sm'+(x.id===p.id?' on':'')+'" style="margin:3px" data-a="poll:'+x.id+'" title="'+esc(x.q)+'">'+esc(x.lesson)+'：'+esc(x.q.slice(0,14))+(x.q.length>14?'…':'')+'</button>'}).join('');
+    $('#ts').textContent=c.show?'目前：學生可看到結果（按此隱藏）':'目前：結果已隱藏（按此公布）';
+    $('#qt').textContent=p.q;
+    var vs=D.votes.filter(function(v){return v.pollId===p.id});
+    $('#pr').innerHTML='<p class="muted">已投票 '+vs.length+' 人</p>'+bars(p.opts.map(function(o,i){return {l:o,n:vs.filter(function(v){return v.choice===o}).length,c:['--teal','--amber','--violet','--ink','--muted'][i]}}));
+  };
+}};
+ACT.vote=function(o){var c=ctl();put('votes',c.pollId+'_'+me(),{pollId:c.pollId,choice:o,g:S.g,s:S.s})};
+ACT.poll=function(id){setCtl({pollId:id})};
+ACT.toggleshow=function(){setCtl({show:!ctl().show})};
+ACT.clearvotes=function(){var id=ctl().pollId;D.votes.filter(function(v){return v.pollId===id}).forEach(function(v){delDoc('votes',v.id)})};
+
+/* D 生活實例牆 */
+var dcat='全部';
+MODS.d={mount:function(root,t){
+  function list(items,del){
+    var f=items.filter(function(x){return dcat==='全部'||x.cat===dcat});
+    if(!f.length)return '<div class="empty">這裡還沒有投稿</div>';
+    return f.map(function(x){return '<div class="post"><div><span class="tag">'+esc(x.cat)+'</span><p>'+esc(x.text)+'</p></div>'+(del?'<button class="btn sm bad" type="button" data-a="wdel:'+x.id+'">刪除</button>':'')+'</div>'}).join('');
+  }
+  var tabs='<div class="row" id="ct">'+['全部'].concat(CATS).map(function(c){return '<button type="button" class="btn sm" data-a="wcat:'+c+'">'+c+'</button>'}).join('')+'</div>';
+  if(!t){
+    root.innerHTML=head('D','生活實例牆','第 2 節 想一想 · 第 3 節練習 B · 匿名投稿，老師審核後才顯示')+
+    '<div class="card"><h3>投稿一則生活周遭的例子</h3><p class="muted">家庭、校園、新聞、戲劇、廣告都可以，例如：「廣告裡洗衣服的都是媽媽」「戲劇裡總是男生保護女生」。請遵守安全討論約定，只寫現象，不寫任何同學的名字。</p>'+
+    '<label class="fld"><span>內容（最多 80 字）</span><textarea id="wt" rows="3" maxlength="80"></textarea></label><label class="fld"><span>分類</span><select id="wc">'+CATS.map(function(c){return '<option>'+c+'</option>'}).join('')+'</select></label><div class="row"><button class="btn primary" id="ws" type="button">投稿</button></div><div id="mine"></div></div>'+
+    '<div class="card"><h3>實例牆</h3>'+tabs+'<div id="wl" style="margin-top:8px"></div></div>';
+    $('#ws').onclick=function(){var x=$('#wt').value.trim();if(!x){toast('請先輸入內容');return}
+      addDoc('wall',{text:x,cat:$('#wc').value,status:'pending',ts:Date.now(),g:S.g,s:S.s}).then(function(){$('#wt').value='';toast('已投稿，等老師審核')})};
+    return function(){
+      $$('#ct button').forEach(function(b){b.classList.toggle('on',b.dataset.a==='wcat:'+dcat)});
+      var my=D.wall.filter(function(x){return x.g===S.g&&x.s===S.s}).sort(function(a,b){return b.ts-a.ts});
+      $('#mine').innerHTML=my.length?'<p class="muted" style="margin-top:10px">我的投稿</p>'+my.map(function(x){return '<div class="post"><p>'+esc(x.text)+'</p><span class="tag">'+({pending:'等待審核',ok:'已通過',rej:'已退回'}[x.status]||'')+'</span></div>'}).join(''):'';
+      $('#wl').innerHTML=list(D.wall.filter(function(x){return x.status==='ok'}).sort(function(a,b){return b.ts-a.ts}));
+    };
+  }
+  root.innerHTML=head('D','生活實例牆（教師端）','審核後才顯示，可依分類投影')+
+   '<div class="card"><h3>待審核</h3><div id="pd"></div></div><div class="card"><h3>已通過（投影用）</h3>'+tabs+'<div id="ok" style="margin-top:8px"></div></div>'+
+   tips(['投稿保留到第 3 節使用；備案：紙本便利貼貼黑板。','念出 3–4 則並追問：這句話裡有沒有「應該」「才」「就是要」的味道？如果把兩個人的性別對調，這句話還會被說嗎？']);
+  return function(){
+    $$('#ct button').forEach(function(b){b.classList.toggle('on',b.dataset.a==='wcat:'+dcat)});
+    var pd=D.wall.filter(function(x){return x.status==='pending'}).sort(function(a,b){return a.ts-b.ts});
+    $('#pd').innerHTML=pd.length?pd.map(function(x){return '<div class="post"><div><span class="tag">'+esc(x.cat)+'</span><p>'+esc(x.text)+'</p></div><div class="row"><button class="btn sm good" type="button" data-a="wok:'+x.id+'">通過</button><button class="btn sm bad" type="button" data-a="wrej:'+x.id+'">退回</button></div></div>'}).join(''):'<div class="empty">沒有待審核的投稿</div>';
+    $('#ok').innerHTML=list(D.wall.filter(function(x){return x.status==='ok'}).sort(function(a,b){return b.ts-a.ts}),true);
+  };
+}};
+ACT.wcat=function(c){dcat=c;schedule()};
+ACT.wok=function(id){patchDoc('wall',id,{status:'ok'})};
+ACT.wrej=function(id){patchDoc('wall',id,{status:'rej'})};
+ACT.wdel=function(id){delDoc('wall',id)};
+
+/* 學習單 2 */
+MODS.w2={mount:function(root,t){
+  if(!t){
+    root.innerHTML=head('2','學習單 2　性別華爾滋','第 2 節 · 性別之城（課本 p.98）與性別日常（課本 p.99）· 全隊共用一份')+
+    '<div class="note">焦點提醒：我們討論的是社會如何看待與對待一位選手。不猜測任何人的身體或私人資料，也不對本人下評論。</div>'+
+    '<div class="card"><h3>（一）性別之城：閱讀 World news</h3><p class="muted">用鉛筆圈出「質疑」、畫線標出「回應與支持」。</p><div id="f1"></div></div>'+
+    '<div class="card"><h3>（二）性別日常：四個實例</h3><p class="muted">每個實例回答三件事：① 我看到的現象　② 背後的性別刻板印象　③ 當事人可能的感受。</p><div id="f2"></div></div>'+
+    '<div class="card"><h3>（三）我的觀察（回家小任務，選做）</h3><p>觀察一則廣告、戲劇或身邊的對話，到 D 生活實例牆匿名投稿，或寫在紙本學習單 2（三）。</p></div>';
+    var f1=form($('#f1'),{col:'ws2',id:function(){return 'g'+S.g},extra:function(){return {g:S.g}},btn:'送出（一）',fields:[
+      {k:'q1',label:'Q1 新聞中，林郁婷遭遇了哪些質疑？'},{k:'q2',label:'Q2 這些質疑，和「女生（或男生）應該是什麼樣子」的想法有什麼關係？'},
+      {k:'q3',label:'Q3 她和支持她的人，分別如何回應？'},{k:'q4',label:'Q4 如果你是她的同學或朋友，你會想對她說什麼？'}]});
+    var fl=[];CASES.forEach(function(c,i){fl.push({k:'c'+i+'a',label:c+'　① 我看到的現象',rows:2},{k:'c'+i+'b',label:c+'　② 背後的性別刻板印象',rows:2},{k:'c'+i+'c',label:c+'　③ 當事人可能的感受',rows:2})});
+    var f2=form($('#f2'),{col:'ws2',id:function(){return 'g'+S.g},extra:function(){return {g:S.g}},btn:'送出（二）',fields:fl});
+    return function(){f1.sync();f2.sync()};
+  }
+  var lab=[['q1','Q1 質疑'],['q2','Q2 與刻板印象的關係'],['q3','Q3 回應'],['q4','Q4 想說的話']];
+  CASES.forEach(function(c,i){lab.push(['c'+i+'a',c+' ① 現象'],['c'+i+'b',c+' ② 刻板印象'],['c'+i+'c',c+' ③ 感受'])});
+  root.innerHTML=head('2','學習單 2（教師端）','各隊送出的內容')+'<div class="card" id="wa"></div>'+
+   tips(['引導問句：這句話裡面有沒有「應該」「才」「就是要」的味道？如果你是被說的那個人，你會有什麼感覺？','家庭有很多樣貌，可能是爸爸與孩子、叔叔或朋友一起出遊，不能只靠外表猜測（家 Db-IV-1）。','看新聞時，我們可以怎麼讀得更有性別意識？（性 J7）']);
+  return function(){$('#wa').innerHTML=answers('ws2',lab)};
+}};
+
+/* E 四步驟鷹架 */
+var etask='A',epick=null;
+var ETEXT={A:'女生情感充沛，容易鑽牛角尖，不擅長問題解決？'};
+MODS.e={mount:function(root,t){
+  var lab=[['f0','① 發現'],['f1','② 質疑'],['f2','③ 同理'],['f3','④ 修正']];
+  if(!t){
+    root.innerHTML=head('E','四步驟鷹架','第 3 節 · 性別城恰恰恰（課本 p.100）· 發‧質‧同‧修')+
+    '<div class="card"><h3>關鍵字雷達</h3><p>聽到「應該、一定、才、就是要、天生、比較適合」時，提醒自己：這裡可能有刻板印象。</p></div>'+
+    '<details class="card"><summary>看老師的示範：告白應由男生扮演「主動」的角色，才能展現男子氣概？</summary><div class="body"><p><b>① 發現</b>　這句話說「男生應主動告白」。</p><p><b>② 質疑</b>　告白一定要由男生主動嗎？誰規定的？</p><p><b>③ 同理</b>　被動或內向的男生會很有壓力；主動的女生也可能被說閒話。</p><p><b>④ 修正</b>　告白並不局限由男生或女生主動。</p></div></details>'+
+    '<div class="card"><h3>選一個題目</h3><div class="row"><button class="btn sm" type="button" data-a="etask:A">練習 A：課本練習時間</button><button class="btn sm" type="button" data-a="etask:B">練習 B：生活實例我來改</button></div><div id="bp" style="margin-top:10px"></div><div class="note" id="tq"></div>'+
+    '<div class="row"><button class="btn sm" type="button" data-a="escope:p" id="sp">個人版</button><button class="btn sm" type="button" data-a="escope:t" id="st">小組版</button></div><div id="ef" style="margin-top:8px"></div></div>';
+    var inst=null,built='',scope='p';
+    function build(){
+      var key=etask==='A'?'A':(epick?'B'+epick.id:null);
+      var sig=key+'|'+scope;if(sig===built)return;built=sig;
+      if(!key){$('#ef').innerHTML='<div class="empty">請先從實例牆挑一則</div>';inst=null;return}
+      var nb=document.createElement('div');$('#ef').replaceChildren(nb);
+      var tid=function(){return scope==='t'?'t_'+S.g+'_'+key:'p_'+S.g+'_'+S.s+'_'+key};
+      inst=form(nb,{col:'steps',kw:true,id:tid,btn:'送出',extra:function(){return {scope:scope,g:S.g,s:S.s,taskKey:key,task:etask==='A'?ETEXT.A:epick.text,ts:Date.now()}},fields:[
+        {k:'f0',label:'① 發現現象／事件',ph:'這句話在說什麼？'},{k:'f1',label:'② 質疑合理性',ph:'一定要這樣嗎？誰規定的？',},
+        {k:'f2',label:'③ 同理當事人',ph:'如果我是被說的人，我會有什麼感覺？'},{k:'f3',label:'④ 修正思考，尊重性別差異',ph:'換成不限制性別的說法'}]});
+    }
+    MODS.e.rebuild=function(){built='';build();live()};
+    MODS.e.scope=function(s){scope=s;build();live()};
+    function live(){
+      $('#tq').innerHTML='題目：'+esc(etask==='A'?ETEXT.A:(epick?epick.text:'（請從下方挑一則實例牆的投稿）'));
+      $('#sp').classList.toggle('on',scope==='p');$('#st').classList.toggle('on',scope==='t');
+      $$('[data-a^="etask:"]').forEach(function(b){b.classList.toggle('on',b.dataset.a==='etask:'+etask)});
+      var bp=$('#bp');
+      if(etask==='B'){var ok=D.wall.filter(function(x){return x.status==='ok'});
+        bp.innerHTML=ok.length?ok.map(function(x){return '<button type="button" class="btn sm'+(epick&&epick.id===x.id?' on':'')+'" style="margin:3px;text-align:left" data-a="epick:'+x.id+'">'+esc(x.text)+'</button>'}).join(''):'<div class="empty">實例牆還沒有通過審核的投稿</div>'}
+      else bp.innerHTML='';
+      if(inst)inst.sync();
+    }
+    build();
+    return live;
+  }
+  root.innerHTML=head('E','四步驟鷹架（教師端）','各隊送出的四步驟 · 挑優良與待改進對照')+
+   '<div class="card"><h3>投影對照</h3><div class="grid"><div><b style="color:var(--ok)">優良</b><div id="pg"></div></div><div><b style="color:var(--bad)">待改進</b><div id="pi"></div></div></div></div>'+
+   '<div class="card"><h3>全部送出</h3><div id="ea"></div></div>'+
+   tips(['檢查每一步是否「具體」：質疑是否有問句？同理是否站在當事人的角度？修正是否不再用性別限制人？','口訣「發‧質‧同‧修」，手勢：一指（發現）、托腮（質疑）、手放胸前（同理）、比讚（修正）。','引導：修正後的說法，是不是讓每個人都更自在？']);
+  function card(r,pin){
+    var kw=kwOf(r.f3);
+    return '<details'+(pin?' open':'')+'><summary>'+(r.scope==='t'?'第 '+r.g+' 小隊（小組版）':'第 '+r.g+' 組 '+r.s+' 號（個人版）')+(kw.length?'　<span class="chip k">修正仍含：'+esc(kw.join('、'))+'</span>':'')+'</summary><div class="body"><p class="muted">'+esc(r.task||'')+'</p>'+lab.map(function(l){return r[l[0]]?'<p><b>'+l[1]+'</b><br>'+esc(r[l[0]])+'</p>':''}).join('')+
+      '<div class="row"><button class="btn sm good" type="button" data-a="epin:'+r.id+':good">設為優良</button><button class="btn sm bad" type="button" data-a="epin:'+r.id+':improve">設為待改進</button><button class="btn sm" type="button" data-a="epin:'+r.id+':">取消</button></div></div></details>';
+  }
+  return function(){
+    var rows=D.steps.slice().sort(function(a,b){return (b.ts||0)-(a.ts||0)});
+    $('#pg').innerHTML=rows.filter(function(r){return r.pin==='good'}).map(function(r){return card(r,true)}).join('')||'<div class="empty">尚未挑選</div>';
+    $('#pi').innerHTML=rows.filter(function(r){return r.pin==='improve'}).map(function(r){return card(r,true)}).join('')||'<div class="empty">尚未挑選</div>';
+    $('#ea').innerHTML=rows.length?rows.map(function(r){return card(r,false)}).join(''):'<div class="empty">還沒有送出內容</div>';
+  };
+}};
+ACT.etask=function(k){etask=k;MODS.e.rebuild()};
+ACT.epick=function(id){var x=find('wall',id);if(x){epick={id:id,text:x.text};MODS.e.rebuild()}};
+ACT.escope=function(s){MODS.e.scope(s)};
+ACT.epin=function(a){var p=a.split(':');patchDoc('steps',p[0],{pin:p[1]||''})};
+
+/* F 廁所觀點表 */
+var FCOLS=[['support','支持的理由'],['worry','擔憂或不同的聲音'],['plan','可以怎麼做（配套作法）']];
+MODS.f={mount:function(root,t){
+  if(!t){
+    root.innerHTML=head('F','性別友善廁所觀點表','第 3 節 · 資訊補給站（課本 p.101）')+
+    '<div class="note">提醒：不猜測同學的性別認同。不同的聲音也要被聽見，可以一起想辦法，讓每個人都安心。</div>'+
+    '<div class="card"><h3>第 '+S.g+' 小隊的觀點表</h3><div class="cols3">'+FCOLS.map(function(c){return '<div><h3 style="font-size:1rem">'+c[1]+'</h3><div class="row"><input id="in_'+c[0]+'" maxlength="60" placeholder="輸入一條" style="flex:1"><button class="btn sm" type="button" data-a="fadd:'+c[0]+'">加入</button></div><div id="li_'+c[0]+'"></div></div>'}).join('')+'</div></div>'+
+    '<div class="card"><h3>我的想法</h3><div id="fm"></div></div>';
+    var fm=form($('#fm'),{col:'reflect',id:rid,off:S.shared&&!S.uid,extra:function(){return {code:S.code,g:S.g,s:S.s,ts:Date.now()}},btn:'送出我的想法',fields:[{k:'mine',label:'身為中學生的我，對性別友善廁所的想法是……，因為……',rows:3}]});
+    FCOLS.forEach(function(c){$('#in_'+c[0]).addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();ACT.fadd(c[0])}})});
+    return function(){
+      FCOLS.forEach(function(c){var it=D.toilet.filter(function(x){return x.g===S.g&&x.col===c[0]}).sort(function(a,b){return a.ts-b.ts});
+        $('#li_'+c[0]).innerHTML=it.map(function(x){return '<div class="item"><span>'+esc(x.text)+'</span><button class="btn sm" type="button" data-a="fdel:'+x.id+'" aria-label="刪除">×</button></div>'}).join('')});
+      fm.sync();
+    };
+  }
+  root.innerHTML=head('F','性別友善廁所觀點表（教師端）','全班觀點彙整，相同詞彙歸類')+
+   '<div class="cols3">'+FCOLS.map(function(c){return '<div class="card"><h3>'+c[1]+'</h3><div id="tf_'+c[0]+'"></div></div>'}).join('')+'</div>'+
+   '<div class="card"><h3>我的想法（學生自述）</h3><div id="tm"></div></div>'+
+   tips(['每隊分享「1 個擔憂＋1 個配套」，教師回應：不同的聲音也要被聽見；可以一起想辦法，讓每個人都安心。','帶回課本提問：身為中學生的你，對這件事情的想法是什麼？請 2–3 位自願者以「我認為……，因為……」回答。不須要求每個人表態。','全程聚焦於社會如何看待與對待人，不猜測、不討論任何個人的身體或私人資訊。']);
+  return function(){
+    FCOLS.forEach(function(c){var m={};D.toilet.filter(function(x){return x.col===c[0]}).forEach(function(x){var k=x.text.trim();m[k]=(m[k]||0)+1});
+      var ks=Object.keys(m).sort(function(a,b){return m[b]-m[a]});
+      $('#tf_'+c[0]).innerHTML=ks.length?ks.map(function(k){return '<div class="item"><span>'+esc(k)+'</span><b>×'+m[k]+'</b></div>'}).join(''):'<div class="empty">尚無內容</div>'});
+    var mine=D.reflect.filter(function(r){return r.mine});
+    $('#tm').innerHTML=mine.length?mine.map(function(r){return '<div class="post"><p>'+esc(r.mine)+'</p><span class="tag">'+r.g+' 組 '+r.s+' 號</span></div>'}).join(''):'<div class="empty">尚無內容</div>';
+  };
+}};
+ACT.fadd=function(c){var i=$('#in_'+c),v=i.value.trim();if(!v)return;addDoc('toilet',{g:S.g,s:S.s,col:c,text:v,ts:Date.now()}).then(function(){i.value=''})};
+ACT.fdel=function(id){delDoc('toilet',id)};
+
+/* G 省思表單 */
+function rid(){return S.shared?S.uid:'u'+S.g+'_'+S.s}
+var hideSeat=true,gq='all';
+var GQ=[['l1a','第 1 節 ① 對於性別，我有刻板印象嗎？（請舉一個例子）'],['l1b','第 1 節 ② 性別刻板印象對我的影響是什麼？'],['l3a','第 3 節 ① 關於性別議題，我有哪些新的想法及感受？'],['l3b','第 3 節 ② 發現自己或他人具有性別刻板印象時，我會怎麼做？'],['l3c','第 3 節 ③ 我的性別刻板印象會如何影響自己與不同性別的人交往？']];
+MODS.g={mount:function(root,t){
+  if(!t){
+    var off=S.shared&&!S.uid;
+    root.innerHTML=head('G','省思表單','第 1 節（學習單 1）與第 3 節（學習單 3）· 送出後只有老師看得到')+
+    (off?'<div class="note">這個連線版本需要登入才能保存省思，請改用紙本學習單。</div>':'')+
+    '<div class="card"><h3>第 1 節　性別職業聯想國省思</h3><div id="g1"></div></div><div class="card"><h3>第 3 節　分享與省思</h3><div id="g3"></div></div>';
+    var ex=function(){return {code:S.code,g:S.g,s:S.s,ts:Date.now()}};
+    var a=form($('#g1'),{col:'reflect',id:rid,off:off,extra:ex,fields:[{k:'l1a',label:'① 對於性別，我有刻板印象嗎？（請舉一個例子）'},{k:'l1b',label:'② 性別刻板印象對我的影響是什麼？（想想：會不會影響我的選擇、我看別人的方式、別人看我的方式）'}]});
+    var b=form($('#g3'),{col:'reflect',id:rid,off:off,extra:ex,fields:[{k:'l3a',label:'① 關於性別議題，我有哪些新的想法及感受？'},{k:'l3b',label:'② 發現自己或他人具有性別刻板印象時，我會怎麼做？'},{k:'l3c',label:'③ 我的性別刻板印象會如何影響自己與不同性別的人交往？'}]});
+    return function(){a.sync();b.sync()};
+  }
+  root.innerHTML=head('G','省思表單（教師端）','批閱、詞頻統計，投影時可隱藏座號')+
+   '<div class="card"><div class="row"><label class="row"><input type="checkbox" id="hs" style="width:auto"> 隱藏組別座號</label><select id="gs" style="width:auto;max-width:100%"><option value="all">全部題目</option>'+GQ.map(function(q){return '<option value="'+q[0]+'">'+esc(q[1])+'</option>'}).join('')+'</select></div></div>'+
+   '<div class="card"><h3>詞頻</h3><div class="chipwrap" id="wf"></div></div><div class="card"><h3>省思內容</h3><div id="ga"></div></div>'+
+   tips(['教師結語：今天不是要大家變得不敢說話，而是學會多問一句：「一定要這樣嗎？」每個人都值得被當作「他自己」來看見。','邀請 3 位自願者分享，投影時隱藏座號。課後挑選匿名的優秀回應於下次上課回饋。']);
+  $('#hs').checked=hideSeat;$('#hs').onchange=function(e){hideSeat=e.target.checked;schedule()};
+  $('#gs').onchange=function(e){gq=e.target.value;schedule()};
+  return function(){
+    var qs=GQ.filter(function(q){return gq==='all'||q[0]===gq});
+    var texts=[];D.reflect.forEach(function(r){qs.forEach(function(q){if(r[q[0]])texts.push(r[q[0]])})});
+    var stop='我的是不會了在有也都就和你他她要這那個但因為所以可以如果';var cnt={};
+    texts.forEach(function(x){var s=x.replace(/[^一-鿿]/g,'');for(var i=0;i<s.length-1;i++){var w=s.substr(i,2);if(stop.indexOf(w[0])>=0||stop.indexOf(w[1])>=0)continue;cnt[w]=(cnt[w]||0)+1}});
+    var ws=Object.keys(cnt).filter(function(k){return cnt[k]>1}).sort(function(a,b){return cnt[b]-cnt[a]}).slice(0,16);
+    $('#wf').innerHTML=ws.length?ws.map(function(w){return '<span class="chip">'+esc(w)+' ×'+cnt[w]+'</span>'}).join(''):'<span class="muted">內容還不夠多</span>';
+    $('#ga').innerHTML=D.reflect.length?D.reflect.slice().sort(function(a,b){return (a.g-b.g)||(a.s-b.s)}).map(function(r,i){
+      var body=qs.map(function(q){return r[q[0]]?'<p><b>'+esc(q[1])+'</b><br>'+esc(r[q[0]]).replace(/\n/g,'<br>')+'</p>':''}).join('');
+      return body?'<div class="post" style="display:block"><span class="tag">'+(hideSeat?'同學 '+(i+1):r.g+' 組 '+r.s+' 號')+'</span>'+body+'</div>':'';
+    }).join('')||'<div class="empty">這題還沒有人回答</div>':'<div class="empty">還沒有送出的省思</div>';
+  };
+}};
+
+/* ---------- home ---------- */
+function homeMount(root,t){
+  root.innerHTML='<div class="mh"><div><h2>'+(t?'三節課流程與課前準備':'這一單元，我們要練習什麼？')+'</h2><p class="muted">綜合活動 · 七年級 · 第五主題「I」的進行式 · 第 1 單元　共 3 節 135 分鐘</p></div></div>'+
+   '<div class="grid">'+LESSONS.map(function(l){return '<div class="card lesson"><h3>'+l.t+'</h3><p class="muted">'+l.g+'</p><ul>'+l.s.map(function(s){return '<li><span>'+(s[2]?'<a href="#'+s[2]+'">'+s[0]+'</a>':s[0])+'</span><span class="min">'+(s[1]?s[1]+' 分':'')+'</span></li>'}).join('')+'</ul></div>'}).join('')+'</div>'+
+   (t?'<div class="card"><h3>課前準備</h3>'+PREP.map(function(p,i){return '<label class="row" style="align-items:flex-start;margin-block:6px"><input type="checkbox" style="width:auto;margin-top:6px" data-prep="'+i+'"><span>'+p+'</span></label>'}).join('')+'</div>'+
+   '<div class="card"><h3>資料與隱私</h3><p>不蒐集姓名，記錄只用組別與座號。資料只用於本單元教學，課後匯出統計後依校內規範處理。匿名投稿預設教師審核後才顯示。</p><p class="muted">斷線時改用紙本備案（附件 1–4），流程相同，只是操作改為抽盒子、貼海報、寫紙本。</p></div>':'')+
+   '<div class="card"><h3>這個學習網怎麼用</h3><p>跟著老師的指令打開對應的分頁。每個人的想法都被當作資料，不是考試，沒有標準答案。先看見自己腦中的「自動補圖」，才有機會改變。</p></div>';
+  if(t){var ck=LS.get('gl_prep',{});$$('[data-prep]',root).forEach(function(c){c.checked=!!ck[c.dataset.prep];c.onchange=function(){ck[c.dataset.prep]=c.checked;LS.set('gl_prep',ck)}})}
+  return function(){};
+}
+MODS.home={mount:function(r,t){return homeMount(r,t)}};
+
+/* ---------- shell & routing ---------- */
+function teacherOK(){return !S.shared||S.canEdit===true}
+function shell(){
+  app.innerHTML='<div class="top"><div class="brand"><span class="lens" aria-hidden="true"></span><b>性別新「視」界</b></div><div class="who"><span class="badge'+(S.teacher?' t':'')+'">'+(S.teacher?'教師端':(S.code+'・第 '+S.g+' 組・'+S.s+' 號'))+'</span>'+
+   (teacherOK()?'<button class="btn sm" type="button" id="sw">'+(S.teacher?'切到學生端':'切到教師端')+'</button>':'')+'<button class="btn sm" type="button" id="lo">登出</button></div></div>'+
+   '<details class="pledge" open><summary>安全討論約定（三節課都適用，匿名投稿也一樣）</summary><ol><li>對事不對人</li><li>不嘲笑、不起鬨</li><li>不猜測同學的性別認同或性傾向</li><li>可以不同意，但要說理由</li><li>聽見別人的想法時，先聽完再回應</li></ol></details>'+
+   '<div id="net" class="net" hidden>網路中斷了。請改用紙本備案（附件 1–4），流程相同。</div>'+
+   '<nav class="tabs" aria-label="學習模組">'+TABS.map(function(t){return '<a href="#'+t[0]+'" data-r="'+t[0]+'">'+t[1]+'</a>'}).join('')+'</nav><main id="view"></main>';
+  view=$('#view');
+  $('#lo').onclick=function(){LS.set('gl_user',null);current=null;unsubs.splice(0).forEach(function(f){f()});loginView()};
+  var sw=$('#sw');if(sw)sw.onclick=function(){S.teacher=!S.teacher;shell();route()};
+  view.addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b||b.disabled)return;var p=b.dataset.a.split(':');var fn=ACT[p[0]];if(fn)fn(p.slice(1).join(':'),b)});
+  net();
+}
+function net(){var n=$('#net');if(n)n.hidden=navigator.onLine!==false}
+window.addEventListener('online',net);window.addEventListener('offline',net);
+function route(){
+  if(!view)return;
+  var r=(location.hash||'#home').slice(1);if(!MODS[r])r='home';
+  $$('.tabs a').forEach(function(a){if(a.dataset.r===r)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  view.innerHTML='';var box=document.createElement('div');view.appendChild(box);
+  current={live:MODS[r].mount(box,S.teacher)};
+  if(current.live)current.live();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- login ---------- */
+var caps=null;
+function initCaps(){
+  if(caps)return caps;
+  caps=new Promise(function(res){
+    var done=false;function fin(){if(!done){done=true;res()}}
+    setTimeout(fin,6000);
+    try{
+      var c=window.claude;if(!c||!c.use){fin();return}
+      Promise.all([c.use('db'),c.use('user')]).then(function(a){
+        db=a[0];S.shared=!!db;
+        if(a[1]){return Promise.all([a[1].id(),a[1].canEdit()]).then(function(v){S.uid=v[0];S.canEdit=v[1]})}
+      }).catch(function(){}).then(fin);
+    }catch(e){fin()}
+  });
+  return caps;
+}
+function enter(teacher,code,g,s){
+  S.code=String(code).trim().replace(/[^A-Za-z0-9_-]/g,'')||'class';S.g=g;S.s=s;S.teacher=teacher;
+  LS.set('gl_user',{code:code,g:g,s:s,t:teacher});
+  startSync();shell();route();
+}
+function loginView(){
+  var u=LS.get('gl_user',null)||{};
+  app.innerHTML='<div class="login"><span class="lens" aria-hidden="true" style="display:inline-block"></span><h1>性別新「視」界</h1><p class="sub">綜合活動 · 七年級 · 第五主題「I」的進行式 · 第 1 單元</p>'+
+   '<form id="lf" class="card"><label class="fld"><span>班級代碼</span><input id="lc" required maxlength="20" autocomplete="off" placeholder="例如 701" value="'+esc(u.code||'')+'"></label>'+
+   '<div class="two"><label class="fld"><span>組別</span><select id="lg">'+[1,2,3,4,5,6].map(function(n){return '<option value="'+n+'"'+(u.g===n?' selected':'')+'>第 '+n+' 組</option>'}).join('')+'</select></label>'+
+   '<label class="fld"><span>座號</span><input id="ls" type="number" inputmode="numeric" min="1" max="60" value="'+esc(u.s||'')+'"></label></div>'+
+   '<p class="muted">不需要輸入姓名，所有紀錄都以組別與座號匿名保存。</p>'+
+   '<div class="row"><button class="btn primary" type="submit">進入學習網</button><button class="btn" type="button" id="tt">以教師身分進入</button></div><p class="muted" id="st"></p></form></div>';
+  $('#st').textContent='連線中…';
+  initCaps().then(function(){$('#st').textContent=S.shared?'已連線：全班資料會即時同步。':'單機模式：資料只保存在這台裝置。'});
+  function code(){var c=$('#lc').value.trim();if(!c){$('#lc').focus();toast('請輸入班級代碼');return null}return c}
+  $('#lf').onsubmit=function(e){e.preventDefault();var c=code();if(!c)return;var s=parseInt($('#ls').value,10);if(!s){toast('請輸入座號');return}
+    $('#st').textContent='連線中…';initCaps().then(function(){enter(false,c,parseInt($('#lg').value,10),s)})};
+  $('#tt').onclick=function(){var c=code();if(!c)return;initCaps().then(function(){if(!teacherOK()){toast('教師端只開放給這個頁面的編輯者');return}enter(true,c,0,0)})};
+}
+loginView();
+})();
+</script>
+
+</body></html>
